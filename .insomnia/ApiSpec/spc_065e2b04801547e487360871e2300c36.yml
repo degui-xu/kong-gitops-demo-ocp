@@ -3,15 +3,15 @@ type: ApiSpec
 parentId: wrk_aef9eca69f284518b83dbd1575d14b9d
 modified: 1691997416955
 created: 1625776793200
-fileName: blog
+fileName: Betting
 contents: |
   openapi: 3.0.0
   info:
     version: '2.3'
-    title: Blog
+    title: Betting
     license:
       name: Apache 2.0
-    description: 'Robin Singapore BLog'
+    description: 'Betting API'
     contact:
       name: Kong
   servers:
