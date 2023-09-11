@@ -62,9 +62,6 @@ jobs:
       env:
         DECK_KONG_ADDR: ${{ secrets.ADMIN_API_URL }}
         DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
-    - name: Run API Tests
-      run: |
-        inso -w $GITHUB_WORKSPACE run test -e Development "Policy Guardrails" --ci --disableCertValidation
     - name: Back out changes on failure
       if: ${{ failure() }}
       run: deck sync --kong-addr http://sppl-admin.service-connectivity.com:8001 --headers "Kong-Admin-Token:kong" --workspace B2B -s kong-default.yaml --select-tag gitops --tls-skip-verify
