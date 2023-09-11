@@ -28,19 +28,19 @@ jobs:
         curl -sL https://github.com/Kong/insomnia/releases/download/lib%403.6.0/inso-linux-3.6.0.tar.xz -o inso.tar.xz
         sudo tar -xf inso.tar.xz -C /tmp/
         cp /tmp/inso /usr/local/bin/
-    - run: inso -w $GITHUB_WORKSPACE export spec blog -o blog.yaml --ci
-      name: Export blog spec
+    - run: inso -w $GITHUB_WORKSPACE export spec Betting -o betting.yaml --ci
+      name: Export betting spec
     - name: Substitute secrets
       uses: bluwy/substitute-string-action@v1
-      id: blog-yaml
+      id: betting-yaml
       with:
-        _input-file: blog.yaml
+        _input-file: betting.yaml
         OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
         OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
     - name: Output OAS to file
-      run: echo "${{ steps.blog-yaml.outputs.result }}" > blog-new.yaml
+      run: echo "${{ steps.blog-yaml.outputs.result }}" > betting-new.yaml
     - name: Generate new gateway configuration
-      run: deck file openapi2kong --spec blog-new.yaml --output-file ./deck/kong-new.yaml
+      run: deck file openapi2kong --spec betting-new.yaml --output-file ./deck/kong-new.yaml
     - name: Substitute plugin secrets
       uses: bluwy/substitute-string-action@v1
       id: plugins-deck
