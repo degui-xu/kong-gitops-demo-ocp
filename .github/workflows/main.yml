@@ -38,7 +38,7 @@ jobs:
         OIDC_CLIENT_ID: ${{ secrets.OIDC_CLIENT_ID }}
         OIDC_CLIENT_SECRET: ${{ secrets.OIDC_CLIENT_SECRET }}
     - name: Output OAS to file
-      run: echo "${{ steps.blog-yaml.outputs.result }}" > betting-new.yaml
+      run: echo "${{ steps.betting-yaml.outputs.result }}" > betting-new.yaml
     - name: Generate new gateway configuration
       run: deck file openapi2kong --spec betting-new.yaml --output-file ./deck/kong-new.yaml
     - name: Substitute plugin secrets
