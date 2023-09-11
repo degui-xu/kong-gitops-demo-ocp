@@ -51,14 +51,14 @@ jobs:
     - name: Output Plugins to file
       run: echo "${{ steps.plugins-deck.outputs.result }}" > ./deck/plugins.yaml
     - name: Backup existing configuration
-      run: deck dump --workspace default -o kong-default.yaml --select-tag gitops --tls-skip-verify
+      run: deck dump --kong-addr http://sppl-admin.service-connectivity.com:8001 --headers "Kong-Admin-Token:kong" --workspace B2B -o kong-default.yaml --select-tag gitops --tls-skip-verify
       env:
         DECK_KONG_ADDR: ${{ secrets.ADMIN_API_URL }}
         DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
     - name: Convert Config
       run: deck convert --input-file ./deck --from kong-gateway-2.x --to kong-gateway-3.x --output-file kong-new.yaml
     - name: Apply new configuration
-      run: deck sync --workspace default --select-tag gitops -s kong-new.yaml --tls-skip-verify
+      run: deck sync --kong-addr http://sppl-admin.service-connectivity.com:8001 --headers "Kong-Admin-Token:kong" --workspace B2B --select-tag gitops -s kong-new.yaml --tls-skip-verify
       env:
         DECK_KONG_ADDR: ${{ secrets.ADMIN_API_URL }}
         DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
@@ -67,7 +67,7 @@ jobs:
         inso -w $GITHUB_WORKSPACE run test -e Development "Policy Guardrails" --ci --disableCertValidation
     - name: Back out changes on failure
       if: ${{ failure() }}
-      run: deck sync --workspace default -s kong-default.yaml --select-tag gitops --tls-skip-verify
+      run: deck sync --kong-addr http://sppl-admin.service-connectivity.com:8001 --headers "Kong-Admin-Token:kong" --workspace B2B -s kong-default.yaml --select-tag gitops --tls-skip-verify
       env:
         DECK_KONG_ADDR: ${{ secrets.ADMIN_API_URL }}
         DECK_HEADERS: ${{ secrets.KONG_DECK_HEADERS }}
